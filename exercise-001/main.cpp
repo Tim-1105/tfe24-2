@@ -15,5 +15,11 @@ auto main(int argc, char **argv) -> int
 
     /* INSERT YOUR CODE HERE */
 
+    //Teil 1: Grundlagen Referenzen:
+
+    int x = 10;
+    int& r = x; //Referenz r auf x
+    
+
     return 0; /* exit gracefully*/
 }
