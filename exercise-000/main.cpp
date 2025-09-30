@@ -11,9 +11,16 @@ auto main(int argc, char **argv) -> int
      * it is much more convenient than std::cout and printf
      * More info at https://fmt.dev/latest/api.html
      */
-    fmt::print("Hello, {}!\n", tfe24::PROJECT_NAME);
+    fmt::print("Hello World, {}!\n", tfe24::PROJECT_NAME);
 
     /* INSERT YOUR CODE HERE */
+    int x = 10;
+    int* p = &x;
+    int y = 20;
+    p=&y;
+    int* p2 = &x;
+    int foo = *p + *p2;
+    fmt::print("The value of loo is: {}\n", foo); 
 
     return 0; /* exit gracefully*/
 }
