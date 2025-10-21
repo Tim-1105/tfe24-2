@@ -2,6 +2,8 @@
 #include <fmt/format.h>
 #include <random>
 #include <vector>
+#include <chrono>
+#include <algorithm>
 
 #include "CLI/CLI.hpp"
 #include "config.h"
@@ -9,10 +11,14 @@
 auto main(int argc, char **argv) -> int
 {
     int count = 5;
+    std::chrono::system_clock::time_point start;
+    std::chrono::system_clock::time_point end;
+
     /**
      * CLI11 is a command line parser to add command line options
      * More info at https://github.com/CLIUtils/CLI11#usage
      */
+    
     CLI::App app{PROJECT_NAME};
     
     try
@@ -42,13 +48,19 @@ auto main(int argc, char **argv) -> int
 
     std::vector<int> vec;
     vec.reserve(count);
+
     for (int i = 0; i < count; ++i)
     {
         int value = uniform_dist(e1);
         vec.push_back(value);
         fmt::print("Random value {}: {}\n", i + 1, value);
     }
-    
+   
+
+    start = std::chrono::system_clock::now();
+    fmt::print("Lets sort the values now!\n");
+    std::sort(vec.begin(), vec.end(), std::less<int>());
+    end = std::chrono::system_clock::now();
 
 
 
