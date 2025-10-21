@@ -6,13 +6,16 @@
 
 auto main(int argc, char **argv) -> int
 {
+    int counter = 5;
     /**
      * CLI11 is a command line parser to add command line options
      * More info at https://github.com/CLIUtils/CLI11#usage
      */
     CLI::App app{PROJECT_NAME};
+    
     try
     {
+        app.add_option("-c,--count", counter, "Number of iterations") ->default_val("20");
         app.set_version_flag("-V,--version", fmt::format("{} {}", PROJECT_VER, PROJECT_BUILD_DATE));
         app.parse(argc, argv);
     }
@@ -29,6 +32,8 @@ auto main(int argc, char **argv) -> int
     fmt::print("Hello, {}!\n", app.get_name());
 
     /* INSERT YOUR CODE HERE */
+
+    fmt::print("Counter value: {}\n", counter);
 
     return 0; /* exit gracefully*/
 }
