@@ -1,13 +1,8 @@
 #include <fmt/chrono.h>
 #include <fmt/format.h>
-
-#include <nlohmann/json.hpp>
-
 #include "CLI/CLI.hpp"
 #include "config.h"
-
-// for convenience
-using json = nlohmann::json;
+#include "point.hpp"
 
 auto main(int argc, char **argv) -> int
 {
@@ -34,6 +29,7 @@ auto main(int argc, char **argv) -> int
     fmt::print("Hello, {}!\n", app.get_name());
 
     /* INSERT YOUR CODE HERE */
+
 
     return 0; /* exit gracefully*/
 }

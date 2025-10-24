@@ -1,24 +1,63 @@
 // 001-TestCase.cpp
 // And write tests in the same file:
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_approx.hpp>
+#include "../point.hpp"
 
-static auto factorial(int number) -> int
-{
-    // return number <= 1 ? number : Factorial( number - 1 ) * number;  // fail
-    return number <= 1 ? 1 : factorial(number - 1) * number;  // pass
+TEST_CASE("Point: Konstruktoren") {
+    SECTION("Init mit Werten") {
+        Point p{2, 3};
+        REQUIRE(p.m_x == 2);
+        REQUIRE(p.m_y == 3);
+    }
+    SECTION("Default-Konstruktor") {
+        Point p;
+        REQUIRE(p.m_x == 0);
+        REQUIRE(p.m_y == 0);
+    }
 }
 
-TEST_CASE("Factorial of 0 is 1 (fail)", "[single-file]")
-{
-    REQUIRE(factorial(0) == 0);
+TEST_CASE("Point: move verschiebt relativ") {
+    Point p{1, 1};
+    p.move(2, -3);
+    REQUIRE(p.m_x == 3);
+    REQUIRE(p.m_y == -2);
 }
 
-TEST_CASE("Factorials of 1 and higher are computed (pass)", "[single-file]")
-{
-    REQUIRE(factorial(1) == 1);
-    REQUIRE(factorial(2) == 2);
-    REQUIRE(factorial(3) == 6);
-    REQUIRE(factorial(10) == 3628800);
+TEST_CASE("Point: distance_to – euklidisch & robust") {
+    Point a{0, 0};
+    Point b{3, 4};
+    REQUIRE( a.distance_to(b) == Catch::Approx(5.0).margin(1e-12) );
+    REQUIRE( b.distance_to(a) == Catch::Approx(5.0).margin(1e-12) );
+    REQUIRE( a.distance_to(a) == Catch::Approx(0.0).margin(1e-12) );
+}
+
+
+TEST_CASE("Point: Große/negative Koordinaten") {
+    Point p1{-1000, -1000};
+    Point p2{1000, 1000};
+    REQUIRE( p1.distance_to(p2) == Catch::Approx(2828.4271247461903).margin(1e-10) );
+}
+
+TEST_CASE("Point: Stabilität bei vielen aufeinanderfolgenden move-Aufrufen") {
+    Point p{0, 0};
+    for (int i = 0; i < 1000000; ++i) {
+        p.move(1, 1);
+    }
+    REQUIRE(p.m_x == 1000000);
+    REQUIRE(p.m_y == 1000000);
+}
+
+TEST_CASE("Point: Dreiecksgleichung der Abstände") {
+    Point p1{0, 0};
+    Point p2{3, 0};
+    Point p3{0, 4};
+    double d12 = p1.distance_to(p2);
+    double d23 = p2.distance_to(p3);
+    double d31 = p3.distance_to(p1);
+    REQUIRE( d12 + d23 >= d31 - 1e-12 );
+    REQUIRE( d23 + d31 >= d12 - 1e-12 );
+    REQUIRE( d31 + d12 >= d23 - 1e-12 );
 }
 
 // Compile & run:
