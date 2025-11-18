@@ -31,14 +31,26 @@ auto main(int argc, char **argv) -> int
 
     // Test myvector
     
-    tfe24::myvector<int> vec;
-    for (int i = 0; i < 10; ++i) {
-        vec.push_back(i * 10);
-    }
-    for (size_t i = 0; i < vec.size(); ++i) {
-        fmt::print("vec[{}] = {}\n", i, vec[i]);
-    }
-    
+    //vector mit size 5 erstellen
+    tfe24::myvector<int> vec2(5);
+    vec2.print_status();
+
+    //Wert 10 hinzufügen
+    vec2.push_back(10);
+    vec2.print_status();
+
+    //Resize auf Size 8
+    vec2.resize(8);
+    vec2.print_status();
+
+    //At Methode testen
+    fmt::print("Wert an Index 5: {}\n", vec2.at(5));
+
+    //Clear Methode testen
+    vec2.clear();
+    vec2.print_status();
+
+
 
     return 0; /* exit gracefully*/
 }

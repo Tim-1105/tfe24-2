@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include <algorithm>
+#include <iostream>
 
 namespace tfe24 {
 
@@ -34,9 +35,12 @@ explicit myvector(size_t count)
 
 myvector(const myvector& other)
     : m_data(nullptr), m_size(other.m_size), m_capacity(other.m_capacity)
-{   if (m_capacity > 0) {
+{
+    if (m_capacity > 0) {
         m_data = new T[m_capacity];
-        copy_dyn_data(other.m_data, m_size);
+        for (size_t i = 0; i < m_size; ++i) {
+            m_data[i] = other.m_data[i];
+        }
     }
 }
 
@@ -122,6 +126,20 @@ void clear() noexcept {
     m_size = 0;
 }
 
+//Status Methode
+void print_status() const noexcept {
+    std::cout << "Size: " << m_size << ", Capacity: " << m_capacity << std::endl;
+}
+
+//At Methode
+T at(size_t index) {
+    if (index >= m_size) {
+        throw std::out_of_range("Index out of range");
+    }
+    return m_data[index];
+
+}
+
 private:
     T* m_data;
     size_t m_size;
@@ -129,5 +147,6 @@ private:
 };
 
 }
+
 
 #endif /* MY_VECTOR_HPP */
